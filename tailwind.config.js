@@ -1,16 +1,17 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 module.exports = {
   darkMode: ['class'],
   content: ['./src/pages/**/*.{js,ts,jsx,tsx,mdx}', './src/components/**/*.{js,ts,jsx,tsx,mdx}', './src/app/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     container: {
-      center: 'true',
+      center: true,
       padding: '2rem',
       screens: {
         '2xl': '1400px',
         xs: '376px',
-        '': '.screens',
-        '...defaultTheme.screens': '',
+        ...defaultTheme.screens,
       },
     },
     extend: {
@@ -24,6 +25,8 @@ module.exports = {
         sm: 'calc(var(--radius) - 4px)',
       },
       colors: {
+        bgPrimary: '#003145',
+        bgSecondary: '#002A3B',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
