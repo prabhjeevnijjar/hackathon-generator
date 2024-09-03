@@ -2,7 +2,7 @@ import React from 'react';
 
 const Faqs = () => {
   return (
-    <div className="px-[2rem] md:px-[6rem] 2xl:px-[25rem] mt-[7rem]">
+    <div className="px-[2rem] md:px-[6rem] 2xl:px-[25rem] my-[7rem]">
       <h1 className="font-semibold leading-[1.25rem] text-[2rem] flex justify-center">
         Why participate in&nbsp;<span className="text-[#44924C]">AI Challenges?</span>
       </h1>
@@ -47,9 +47,9 @@ const Faqs = () => {
               strokeLinecap="round"
               strokeLinejoin="round"
             />
-            <path d="M27.1719 26.4375V33.7812" stroke="#0FA958" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round" />
-            <path d="M19.8281 26.4375V33.7812" stroke="#0FA958" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round" />
-            <path d="M23.5 10.2812V2.9375" stroke="#0FA958" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round" />
+            <path d="M27.1719 26.4375V33.7812" stroke="#0FA958" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M19.8281 26.4375V33.7812" stroke="#0FA958" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M23.5 10.2812V2.9375" stroke="#0FA958" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             <path
               d="M15.4219 22.0312C16.6386 22.0312 17.625 21.0449 17.625 19.8281C17.625 18.6114 16.6386 17.625 15.4219 17.625C14.2051 17.625 13.2188 18.6114 13.2188 19.8281C13.2188 21.0449 14.2051 22.0312 15.4219 22.0312Z"
               fill="#0FA958"
