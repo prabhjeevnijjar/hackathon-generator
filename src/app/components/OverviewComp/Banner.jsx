@@ -1,6 +1,10 @@
 'use client';
 
+import useTimer from '@/hooks/useTimer';
+
 const Banner = ({ data }) => {
+  const { status, days, hours, minutes, seconds, formattedStartDate, formattedEndDate } = useTimer(data.startDate, data.endDate);
+  console.log({ formattedStartDate });
   return (
     <div className="bg-bgPrimary">
       <div className="px-[2rem] md:px-[6rem] 2xl:px-[25rem] py-12">
@@ -15,7 +19,9 @@ const Banner = ({ data }) => {
             />
             <path d="M10.316 11.0333L8.58598 9.3033C8.31716 9.03456 8.1661 8.67005 8.16602 8.28993V3.86667" stroke="black" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span>Starts on 17th June'22 09:00PM (India Standard Time)</span>
+          <span>{status === 'upcoming' ? `Starts on ${formattedStartDate?.toLocaleLowerCase()} (IST)` : null}</span>
+          <span>{status === 'active' ? `Ends on ${formattedEndDate?.toLocaleLowerCase()} (IST)` : null}</span>
+          <span>{status === 'ended' ? `Hackathon Ended (Results to be announced)` : null}</span>
         </span>
         <h1 className="mt-7 font-semibold text-white text-[2rem] md:text-[2.5rem] leading-[2.5rem] md:leading-[3rem]">{data?.name || 'Event'}</h1>
         {/* <h3 className="font-medium leading-[1.5rem] text-white text-[1.125rem] mt-5">Identify the class to which each butterfly belongs to</h3> */}

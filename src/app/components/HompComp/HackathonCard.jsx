@@ -1,8 +1,13 @@
 import React from 'react';
 import hackImg from '../../../../public/static/icons/hack1.png';
 import Link from 'next/link';
+import useTimer from '@/hooks/useTimer';
 
 const HackathonCard = ({ data }) => {
+  const { status, days, hours, minutes, seconds } = useTimer(data.startDate, data.endDate);
+  console.log({ status });
+  console.log({ days });
+
   return (
     <div className="bg-white flex flex-col w-[300px] md:w-[300px] xl:w-[350px] rounded-xl">
       <img src={data.image}></img>
@@ -18,19 +23,24 @@ const HackathonCard = ({ data }) => {
       </div>
 
       <div className="flex flex-col justify-center items-center ">
-        <div className="font-medium text-[0.875rem] leading-[0.875rem] text-[#444444]">Starts In</div>
-        <div className="mt-2 grid grid-cols-5 font-semibold text-[1.125rem] leading-[1.75rem] text-[#454545]">
-          <div>00</div>
-          <div className="flex items-center justify-center">:</div>
-          <div>09</div>
-          <div className="flex items-center justify-center">:</div>
-          <div>23</div>
-        </div>
-        <div className="grid grid-cols-3 font-medium leading-[0.625rem] text-[0.625rem] text-[#4F4F4F] gap-5 mt-2">
-          <div>Days</div>
-          <div className="flex items-center justify-center text-right">Hrs</div>
-          <div>Mins</div>
-        </div>
+        <div className="font-medium text-[0.875rem] leading-[0.875rem] text-[#444444]">{status}</div>
+        {status !== 'Ended' ? (
+          <>
+            <div className="mt-2 grid grid-cols-5 font-semibold text-[1.125rem] leading-[1.75rem] text-[#454545]">
+              <div>{days}</div>
+              <div className="flex items-center justify-center">:</div>
+              <div>{hours}</div>
+              <div className="flex items-center justify-center">:</div>
+              <div>{minutes}</div>
+            </div>
+            <div className="grid grid-cols-3 font-medium leading-[0.625rem] text-[0.625rem] text-[#4F4F4F] gap-5 mt-2">
+              <div>Days</div>
+              <div className="flex items-center justify-center text-right">Hrs</div>
+              <div>Mins</div>
+            </div>
+          </>
+        ) : null}
+
         <Link href={`/overview/${data.id}`}>
           <button className="bg-[#44924C] text-white px-3 py-2 rounded-[10px] flex flex-row justify-center items-center gap-2 my-5">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">

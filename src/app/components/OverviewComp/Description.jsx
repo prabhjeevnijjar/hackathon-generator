@@ -5,7 +5,7 @@ import Banner from './Banner';
 import Link from 'next/link';
 
 const Description = ({ slug }) => {
-  const { posts, addPost, fetchPosts, getPostById } = usePostContext();
+  const { getPostById } = usePostContext();
   const data = getPostById(slug);
   console.log({ data });
   return (
