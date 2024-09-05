@@ -1,6 +1,7 @@
 import { Poppins, Inter } from 'next/font/google';
 import './globals.css';
 import Header from './components/CommonComp/Header';
+import PostProvider from '@/context/PostContext';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -21,7 +22,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${poppins.className} ${inter.variable} `}>
         <Header />
-        {children}
+        <PostProvider>{children}</PostProvider>
       </body>
     </html>
   );

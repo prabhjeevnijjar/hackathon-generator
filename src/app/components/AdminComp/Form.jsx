@@ -1,12 +1,83 @@
 'use client';
+import React, { useState, useRef } from 'react';
+import { usePostContext } from '@/context/PostContext';
 import { handleImageChange, onChangeHandler } from '@/lib/utils';
-import React, { useState } from 'react';
 
 const Form = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [state, setState] = useState({ name: '', startDate: '', endDate: '', desc: '', level: '' });
+  const [errors, setErrors] = useState({});
+  const fileInputRef = useRef(null); // Ref for file input
 
-  console.log(selectedImage);
+  const { posts, addPost, fetchPosts } = usePostContext();
+  console.log({ posts });
+  const validateForm = () => {
+    let formErrors = {};
+    let isValid = true;
+
+    // Name validation
+    if (!state.name?.trim()) {
+      formErrors.name = 'Name is required.';
+      isValid = false;
+    }
+
+    // Description validation
+    if (!state.desc?.trim()) {
+      formErrors.description = 'Description is required.';
+      isValid = false;
+    }
+
+    // Start date validation
+    if (!state.startDate) {
+      formErrors.startDate = 'Start date is required.';
+      isValid = false;
+    }
+
+    // End date validation
+    if (!state.endDate) {
+      formErrors.endDate = 'End date is required.';
+      isValid = false;
+    } else if (state.startDate && state.endDate < state.startDate) {
+      formErrors.endDate = 'End date cannot be earlier than start date.';
+      isValid = false;
+    }
+
+    // Image validation
+    if (!selectedImage) {
+      formErrors.image = 'Image is required.';
+      isValid = false;
+    }
+
+    // Level validation
+    if (!state.level) {
+      formErrors.level = 'Level is required.';
+      isValid = false;
+    }
+
+    setErrors(formErrors);
+    return isValid;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (validateForm()) {
+      addPost({ name: state.name, description: state.desc, startDate: state.startDate, endDate: state.endDate, image: selectedImage, level: state.level }); // Only add the post if the form is valid
+      setState({
+        name: '',
+        desc: '',
+        startDate: '',
+        endDate: '',
+        level: 'easy',
+      });
+      // Reset the file input field
+      if (fileInputRef.current) {
+        fileInputRef.current.value = null;
+      }
+      setSelectedImage(null);
+      setErrors({});
+    }
+  };
   return (
     <div className="px-[2rem] md:px-[6rem] 2xl:px-[25rem]">
       <div className="flex flex-col w-full max-w-md items-center gap-1.5 z-2 my-7">
@@ -24,6 +95,7 @@ const Form = () => {
             onChange={(e) => onChangeHandler(e, setState, state)}
             className="rounded-[5px] border px-2 py-1 mt-4"
           />
+          {errors.name && <p className="text-red-500">{errors.name}</p>}
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5 z-2 mt-6">
           <label htmlFor="email" className="leading-[1.187rem] text-[#333333]">
@@ -39,6 +111,7 @@ const Form = () => {
             onChange={(e) => onChangeHandler(e, setState, state)}
             className="rounded-[5px] border px-2 py-1 mt-4"
           />
+          {errors.startDate && <p className="text-red-500">{errors.startDate}</p>}
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5 z-2 mt-6">
           <label htmlFor="Username" className="leading-[1.187rem] text-[#333333]">
@@ -54,6 +127,7 @@ const Form = () => {
             onChange={(e) => onChangeHandler(e, setState, state)}
             className="rounded-[5px] border px-2 py-1 mt-4"
           />
+          {errors.endDate && <p className="text-red-500">{errors.endDate}</p>}
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5 z-2 mt-6">
           <label htmlFor="name" className="leading-[1.187rem] text-[#333333]">
@@ -69,8 +143,9 @@ const Form = () => {
             required
             value={state.desc || ''}
             onChange={(e) => onChangeHandler(e, setState, state)}
-            className="rounded-[5px] border px-2 py-1 mt-4"
+            className={`${errors.description ? 'border-red-500' : ''} rounded-[5px] border px-2 py-1 mt-4`}
           />
+          {errors.description && <p className="text-red-500">{errors.description}</p>}
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5 z-2 mt-6">
           <label htmlFor="name" className="leading-[1.187rem] text-[#333333]">
@@ -82,7 +157,7 @@ const Form = () => {
             </div>
 
             <label className="block mt-4">
-              <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageChange(e, setSelectedImage)} />
+              <input type="file" accept="image/*" ref={fileInputRef} className="hidden" onChange={(e) => handleImageChange(e, setSelectedImage)} />
               <div className="cursor-pointer text-center text-[#44924C] hover:text-green-800">
                 <span className="flex flex-row items-center gap-2 mt-2 ">
                   <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -105,6 +180,7 @@ const Form = () => {
                 </span>
               </div>
             </label>
+            {errors.image && <p className="text-red-500">{errors.image}</p>}
           </div>
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5 z-2 mt-6">
@@ -125,10 +201,13 @@ const Form = () => {
             <option value="easy">Easy</option>
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
-          </select>{' '}
+          </select>
+          {errors.level && <p className="text-red-500">{errors.level}</p>}
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5 z-2 mt-6">
-          <button className="text-white bg-[#44924C] rounded-[10px] font-semibold text-[0.85rem] leading-[1.125rem] px-6 py-2">Save Changes</button>
+          <button className="text-white bg-[#44924C] rounded-[10px] font-semibold text-[0.85rem] leading-[1.125rem] px-6 py-2" onClick={(e) => handleSubmit(e)}>
+            Save Changes
+          </button>
         </div>
       </div>
     </div>
