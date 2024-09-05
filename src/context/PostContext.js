@@ -15,12 +15,6 @@ const PostProvider = ({ children }) => {
 
   // Method to add a new post
   const addPost = ({ name, description, startDate, endDate, image, level }) => {
-    // Check if a post with the same name already exists
-    if (posts.some((post) => post.name === name)) {
-      alert('A post with this name already exists.');
-      return;
-    }
-
     const newPost = {
       id: generateId(),
       name,
@@ -33,6 +27,10 @@ const PostProvider = ({ children }) => {
     };
 
     setPosts((prevPosts) => [...prevPosts, newPost]);
+  };
+
+  const updatePost = (updatedPost) => {
+    setPosts((prevPosts) => prevPosts.map((post) => (post.id === updatedPost.id ? updatedPost : post)));
   };
 
   // Function to fetch a post by ID
@@ -106,7 +104,7 @@ const PostProvider = ({ children }) => {
     setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
   };
 
-  return <PostContext.Provider value={{ posts, addPost, fetchPosts, getPostById, fetchPostsByName, deletePost }}>{children}</PostContext.Provider>;
+  return <PostContext.Provider value={{ posts, addPost, fetchPosts, getPostById, fetchPostsByName, deletePost, updatePost }}>{children}</PostContext.Provider>;
 };
 
 export default PostProvider;

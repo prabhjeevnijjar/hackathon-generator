@@ -1,17 +1,45 @@
 'use client';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { usePostContext } from '@/context/PostContext';
 import { handleImageChange, onChangeHandler } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 
 const Form = () => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [state, setState] = useState({ name: '', startDate: '', endDate: '', desc: '', level: '' });
+  const [state, setState] = useState({ id: '', name: '', startDate: '', endDate: '', desc: '', level: '' });
   const [errors, setErrors] = useState({});
   const fileInputRef = useRef(null); // Ref for file input
   const router = useRouter();
 
-  const { posts, addPost, fetchPostsByName } = usePostContext();
+  const { addPost, updatePost } = usePostContext();
+
+  // Prefill form if post data exists in the router state
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search); // Access query parameters from the URL
+    const postToEdit = {
+      id: urlParams.get('id') || '',
+      name: urlParams.get('name') || '',
+      desc: urlParams.get('description') || '',
+      startDate: urlParams.get('startDate') || '',
+      endDate: urlParams.get('endDate') || '',
+      level: urlParams.get('level') || '',
+      image: urlParams.get('image') || null,
+    };
+
+    setState({
+      id: postToEdit.id,
+      name: postToEdit.name,
+      desc: postToEdit.desc,
+      startDate: postToEdit.startDate,
+      endDate: postToEdit.endDate,
+      level: postToEdit.level,
+    });
+
+    if (postToEdit.image) {
+      setSelectedImage(postToEdit.image); // Set the image if it exists
+    }
+  }, []);
+
   const validateForm = () => {
     let formErrors = {};
     let isValid = true;
@@ -61,13 +89,30 @@ const Form = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (fetchPostsByName(state.name)?.length > 0) {
-      setState({ ...state, name: '' });
-      alert('Post with same name already exist!');
-      return;
-    }
     if (validateForm()) {
-      addPost({ name: state.name, description: state.desc, startDate: state.startDate, endDate: state.endDate, image: selectedImage, level: state.level }); // Only add the post if the form is valid
+      if (state.id) {
+        // Update existing post if there's an id
+        updatePost({
+          id: state.id,
+          name: state.name,
+          description: state.desc,
+          startDate: state.startDate,
+          endDate: state.endDate,
+          image: selectedImage,
+          level: state.level,
+        });
+      } else {
+        // Create new post
+        addPost({
+          name: state.name,
+          description: state.desc,
+          startDate: state.startDate,
+          endDate: state.endDate,
+          image: selectedImage,
+          level: state.level,
+        });
+      }
+
       setState({
         name: '',
         desc: '',

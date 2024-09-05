@@ -22,7 +22,15 @@ const Description = ({ slug }) => {
               <div className="flex flex-row items-end justify-between h-[66px]">
                 <div className="px-3 pb-1 font-bold text-[1.125rem] leading-[1.75rem] border-solid border-b-4 border-[#44924C]">Overview</div>
                 <div className="flex gap-4 pb-3">
-                  <button className="text-white bg-[#44924C] rounded-[10px] font-semibold text-[0.85rem] leading-[1.125rem] px-6 py-2">Edit</button>
+                  <button
+                    onClick={() => {
+                      const queryParams = new URLSearchParams(data).toString();
+                      router.push(`/admin?${queryParams}`);
+                    }}
+                    className="text-white bg-[#44924C] rounded-[10px] font-semibold text-[0.85rem] leading-[1.125rem] px-6 py-2"
+                  >
+                    Edit
+                  </button>
                   <DialogTrigger asChild>
                     <Button
                       variant="outline"
