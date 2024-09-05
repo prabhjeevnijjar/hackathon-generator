@@ -10,6 +10,7 @@ const Challanges = () => {
   const [statusFilters, setStatusFilters] = useState([]); // Status filters
   const [levelFilters, setLevelFilters] = useState([]); // Level filters
   const [filteredPosts, setFilteredPosts] = useState(posts); // Initially show all posts
+  const [searchTerm, setSearchTerm] = useState('');
 
   // Handle status filter checkbox changes
   const handleStatusChange = (e) => {
@@ -26,18 +27,19 @@ const Challanges = () => {
   // Effect to apply filters dynamically when checkboxes change
   useEffect(() => {
     // If no filters are selected, show all posts
-    if (statusFilters.length === 0 && levelFilters.length === 0) {
+    if (statusFilters.length === 0 && levelFilters.length === 0 && !searchTerm) {
       setFilteredPosts(posts);
     } else {
       // Apply filters
       const filters = {
         status: statusFilters,
         level: levelFilters,
+        name: searchTerm,
       };
       const filtered = fetchPosts(filters);
       setFilteredPosts(filtered);
     }
-  }, [statusFilters, levelFilters, posts, fetchPosts]);
+  }, [searchTerm, statusFilters, levelFilters, posts, fetchPosts]);
 
   return (
     <>
@@ -46,7 +48,13 @@ const Challanges = () => {
           <h2 className=" text-white font-bold leading-[2.5rem] text-[1.75rem] mt-[5rem]">Explore Challenges</h2>
 
           <div className="w-full md:w-auto flex items-center space-x-2 my-[4rem] px-8">
-            <input type="text" placeholder="Search" className="w-full md:w-96 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 " />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search"
+              className="w-full md:w-96 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 "
+            />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline">Filter</Button>

@@ -60,9 +60,9 @@ const PostProvider = ({ children }) => {
       const endDate = new Date(post.endDate);
 
       // Status filtering
-      let statusMatch = true; // Start with assuming a match
-      if (filters.status?.length > 0) {
-        statusMatch = false; // Reset if there are filters
+      let statusMatch = true;
+      if (filters.status.length > 0) {
+        statusMatch = false;
         if (filters.status.includes('Active') && now >= startDate && now <= endDate) {
           statusMatch = true;
         }
@@ -75,13 +75,19 @@ const PostProvider = ({ children }) => {
       }
 
       // Level filtering
-      let levelMatch = true; // Assume a match if no filters
+      let levelMatch = true;
       if (filters.level.length > 0) {
-        levelMatch = filters.level.includes(post.level); // Match the post's level with selected filters
+        levelMatch = filters.level.includes(post.level);
       }
 
-      // Return posts that match both the status and level criteria
-      return statusMatch && levelMatch;
+      // Name filtering
+      let nameMatch = true;
+      if (filters.name) {
+        nameMatch = post.name.toLowerCase().includes(filters.name.toLowerCase());
+      }
+
+      // Return posts that match status, level, and name filters
+      return statusMatch && levelMatch && nameMatch;
     });
   };
 
