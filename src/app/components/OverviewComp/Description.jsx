@@ -7,7 +7,7 @@ import Link from 'next/link';
 const Description = ({ slug }) => {
   const { getPostById } = usePostContext();
   const data = getPostById(slug);
-  console.log({ data });
+
   return (
     <>
       {data?.id ? (

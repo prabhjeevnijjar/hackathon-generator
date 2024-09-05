@@ -40,8 +40,8 @@ const PostProvider = ({ children }) => {
     return posts.find((post) => post.id === id) || null; // Return null if not found
   };
 
-  // Method to fetch all posts with filtering options
-  const fetchPosts = ({ filter = 'All', searchQuery = '', level = '' }) => {
+  // Method to search
+  const fetchPostsByName = (searchQuery) => {
     let filteredPosts = posts;
 
     // Filter by search query
@@ -49,17 +49,40 @@ const PostProvider = ({ children }) => {
       filteredPosts = filteredPosts.filter((post) => post.name.toLowerCase().includes(searchQuery.toLowerCase()));
     }
 
-    // Filter by level
-    if (level) {
-      filteredPosts = filteredPosts.filter((post) => post.level === level);
-    }
-
-    // Filter by status
-    if (filter !== 'All') {
-      filteredPosts = filteredPosts.filter((post) => post.status === filter);
-    }
-
     return filteredPosts;
+  };
+
+  // Method to fetch all posts with filtering options
+  const fetchPosts = (filters) => {
+    return posts.filter((post) => {
+      const now = new Date();
+      const startDate = new Date(post.startDate);
+      const endDate = new Date(post.endDate);
+
+      // Status filtering
+      let statusMatch = true; // Start with assuming a match
+      if (filters.status?.length > 0) {
+        statusMatch = false; // Reset if there are filters
+        if (filters.status.includes('Active') && now >= startDate && now <= endDate) {
+          statusMatch = true;
+        }
+        if (filters.status.includes('Upcoming') && now < startDate) {
+          statusMatch = true;
+        }
+        if (filters.status.includes('Past') && now > endDate) {
+          statusMatch = true;
+        }
+      }
+
+      // Level filtering
+      let levelMatch = true; // Assume a match if no filters
+      if (filters.level.length > 0) {
+        levelMatch = filters.level.includes(post.level); // Match the post's level with selected filters
+      }
+
+      // Return posts that match both the status and level criteria
+      return statusMatch && levelMatch;
+    });
   };
 
   // Determine the status of the post (Active, Upcoming, Past)
@@ -73,7 +96,7 @@ const PostProvider = ({ children }) => {
     return 'Active';
   };
 
-  return <PostContext.Provider value={{ posts, addPost, fetchPosts, getPostById }}>{children}</PostContext.Provider>;
+  return <PostContext.Provider value={{ posts, addPost, fetchPosts, getPostById, fetchPostsByName }}>{children}</PostContext.Provider>;
 };
 
 export default PostProvider;

@@ -3,8 +3,8 @@
 import useTimer from '@/hooks/useTimer';
 
 const Banner = ({ data }) => {
-  const { status, days, hours, minutes, seconds, formattedStartDate, formattedEndDate } = useTimer(data.startDate, data.endDate);
-  console.log({ formattedStartDate });
+  const { status, formattedStartDate, formattedEndDate } = useTimer(data.startDate, data.endDate);
+
   return (
     <div className="bg-bgPrimary">
       <div className="px-[2rem] md:px-[6rem] 2xl:px-[25rem] py-12">

@@ -11,7 +11,7 @@ const Form = () => {
   const fileInputRef = useRef(null); // Ref for file input
   const router = useRouter();
 
-  const { posts, addPost, fetchPosts } = usePostContext();
+  const { posts, addPost, fetchPostsByName } = usePostContext();
   const validateForm = () => {
     let formErrors = {};
     let isValid = true;
@@ -61,7 +61,8 @@ const Form = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (fetchPosts({ filter: 'All', searchQuery: state.name, level: '' })?.length > 0) {
+    if (fetchPostsByName(state.name)?.length > 0) {
+      setState({ ...state, name: '' });
       alert('Post with same name already exist!');
       return;
     }

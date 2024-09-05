@@ -5,8 +5,6 @@ import useTimer from '@/hooks/useTimer';
 
 const HackathonCard = ({ data }) => {
   const { status, days, hours, minutes, seconds } = useTimer(data.startDate, data.endDate);
-  console.log({ status });
-  console.log({ days });
 
   return (
     <div className="bg-white flex flex-col w-[300px] md:w-[300px] xl:w-[350px] rounded-xl">
