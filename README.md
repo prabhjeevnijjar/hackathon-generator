@@ -14,26 +14,14 @@ A Hackathon generator app
 - [Prerequisites](#prerequisites)
 - [Technologies Used](#technologies-used)
 
----
-## Product Features
-- Heatmap to show book reading habit
-- Search Book page
-- Book details page
-- Login/Signup page
-- Trending page
-- My Library of books with custom categories
 
 ---
 ## React/JS Technical features Features used
 - useContext 
-- useReducer
-- useThrottle
-  useDebounce
 - useState
 - Server-Side Rendering (SSR)
 - Static Site Generation (SSG)
 - Dynamic Routing
-- IIFE
 - Custom hooks
 - Compound Pattern for Animations
 - map() filter() reduce() Patterns
@@ -42,7 +30,7 @@ A Hackathon generator app
 ---
 ## Demo
 
-Live urls of this project:
+Live urls of this project: https://hackathon-generator.vercel.app/
 
 
 ---
