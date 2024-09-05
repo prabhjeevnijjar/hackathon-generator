@@ -102,7 +102,11 @@ const PostProvider = ({ children }) => {
     return 'Active';
   };
 
-  return <PostContext.Provider value={{ posts, addPost, fetchPosts, getPostById, fetchPostsByName }}>{children}</PostContext.Provider>;
+  const deletePost = (postId) => {
+    setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+  };
+
+  return <PostContext.Provider value={{ posts, addPost, fetchPosts, getPostById, fetchPostsByName, deletePost }}>{children}</PostContext.Provider>;
 };
 
 export default PostProvider;
