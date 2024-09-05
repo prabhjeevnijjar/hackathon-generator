@@ -1,7 +1,11 @@
+'use client';
 import React from 'react';
 import HackathonCard from './HackathonCard';
+import { usePostContext } from '@/context/PostContext';
 
 const Challanges = () => {
+  const { posts, addPost, fetchPosts } = usePostContext();
+  console.log(posts);
   return (
     <>
       <div className="bg-bgSecondary">
@@ -16,10 +20,9 @@ const Challanges = () => {
       </div>
       <div className="bg-bgPrimary">
         <div className="px-[2rem] md:px-[6rem] 2xl:px-[25rem] grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 py-[6rem] justify-items-center">
-          <HackathonCard />
-          <HackathonCard />
-          <HackathonCard />
-          <HackathonCard />
+          {posts?.map((item) => {
+            return <HackathonCard key={item.id} data={item} />;
+          })}
         </div>
       </div>
     </>

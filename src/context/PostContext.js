@@ -35,6 +35,11 @@ const PostProvider = ({ children }) => {
     setPosts((prevPosts) => [...prevPosts, newPost]);
   };
 
+  // Function to fetch a post by ID
+  const getPostById = (id) => {
+    return posts.find((post) => post.id === id) || null; // Return null if not found
+  };
+
   // Method to fetch all posts with filtering options
   const fetchPosts = ({ filter = 'All', searchQuery = '', level = '' }) => {
     let filteredPosts = posts;
@@ -68,7 +73,7 @@ const PostProvider = ({ children }) => {
     return 'Active';
   };
 
-  return <PostContext.Provider value={{ posts, addPost, fetchPosts }}>{children}</PostContext.Provider>;
+  return <PostContext.Provider value={{ posts, addPost, fetchPosts, getPostById }}>{children}</PostContext.Provider>;
 };
 
 export default PostProvider;

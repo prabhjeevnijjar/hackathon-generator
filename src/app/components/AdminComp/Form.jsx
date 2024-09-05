@@ -2,15 +2,16 @@
 import React, { useState, useRef } from 'react';
 import { usePostContext } from '@/context/PostContext';
 import { handleImageChange, onChangeHandler } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 const Form = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [state, setState] = useState({ name: '', startDate: '', endDate: '', desc: '', level: '' });
   const [errors, setErrors] = useState({});
   const fileInputRef = useRef(null); // Ref for file input
+  const router = useRouter();
 
   const { posts, addPost, fetchPosts } = usePostContext();
-  console.log({ posts });
   const validateForm = () => {
     let formErrors = {};
     let isValid = true;
@@ -60,7 +61,10 @@ const Form = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    if (fetchPosts({ filter: 'All', searchQuery: state.name, level: '' })?.length > 0) {
+      alert('Post with same name already exist!');
+      return;
+    }
     if (validateForm()) {
       addPost({ name: state.name, description: state.desc, startDate: state.startDate, endDate: state.endDate, image: selectedImage, level: state.level }); // Only add the post if the form is valid
       setState({
@@ -71,9 +75,8 @@ const Form = () => {
         level: 'easy',
       });
       // Reset the file input field
-      if (fileInputRef.current) {
-        fileInputRef.current.value = null;
-      }
+      if (fileInputRef.current) fileInputRef.current.value = null;
+      router.push('/');
       setSelectedImage(null);
       setErrors({});
     }

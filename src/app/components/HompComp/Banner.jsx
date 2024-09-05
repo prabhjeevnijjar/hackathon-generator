@@ -1,5 +1,6 @@
 import React from 'react';
 import rocketImg from '../../../../public/static/icons/rocket.png';
+import Link from 'next/link';
 
 const Banner = () => {
   return (
@@ -16,7 +17,9 @@ const Banner = () => {
           <h3 className="text-white text-[1.12rem] font-medium ml-10 flex mt-10 w-3/4 xl:w-2/4">
             AI Challenges at DPhi simulate real-world problems. It is a great place to put your AI/Data Science skills to test on diverse datasets allowing you to foster learning through competitions.
           </h3>
-          <button className="ml-10 bg-white mt-8 rounded-[10px] font-semibold text-[1.125rem] px-3 py-2">Create Challenge</button>
+          <Link href="/admin">
+            <button className="ml-10 bg-white mt-8 rounded-[10px] font-semibold text-[1.125rem] px-3 py-2">Create Challenge</button>
+          </Link>
         </div>
 
         <div className="hidden xl:flex w-1/4 md:w-1/2 xl:w-1/3">
